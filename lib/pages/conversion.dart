@@ -1,4 +1,6 @@
+import 'package:date_time/pages/state_manage.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Conversion extends StatefulWidget {
   const Conversion({super.key});
@@ -37,10 +39,9 @@ class _ConversionState extends State<Conversion> {
     setState(() {});
   }
 
-
-
   @override
   Widget build(BuildContext context) {
+    final timeZoneState = Provider.of<TimeZoneState>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -60,7 +61,10 @@ class _ConversionState extends State<Conversion> {
             GestureDetector(
               onTap: () {
                 // Navigate to location page (or any other page)
-                Navigator.pushNamed(context, '/location', arguments: {'previousRoute': '/conversion', 'fromButton' : 'button1'});
+                Navigator.pushNamed(context, '/location', arguments: {
+                  'previousRoute': '/conversion',
+                  'fromButton': 'button1'
+                });
               },
               child: Container(
                 padding: const EdgeInsets.all(16),
@@ -69,7 +73,7 @@ class _ConversionState extends State<Conversion> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  timeZone1, // Display the selected time zone
+                  timeZoneState.timeZone1, // Display the selected time zone
                   style: const TextStyle(fontSize: 18),
                 ),
               ),
@@ -77,7 +81,10 @@ class _ConversionState extends State<Conversion> {
             GestureDetector(
               onTap: () {
                 // Navigate to location page (or any other page)
-                Navigator.pushNamed(context, '/location', arguments: {'previousRoute': '/conversion', 'fromButton' : 'button2'});
+                Navigator.pushNamed(context, '/location', arguments: {
+                  'previousRoute': '/conversion',
+                  'fromButton': 'button2'
+                });
               },
               child: Container(
                 padding: const EdgeInsets.all(16),
@@ -86,7 +93,7 @@ class _ConversionState extends State<Conversion> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  timeZone2, // Display the selected time zone
+                  timeZoneState.timeZone2, // Display the selected time zone
                   style: const TextStyle(fontSize: 18),
                 ),
               ),
