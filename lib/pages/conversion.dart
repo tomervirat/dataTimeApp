@@ -15,6 +15,9 @@ class _ConversionState extends State<Conversion> {
     super.didChangeDependencies();
     // Fetch the timeZone argument from the route
     final args = ModalRoute.of(context)?.settings.arguments as Map?;
+    if(args?['timeZone'] == null) {
+      print('timezone is null');
+    }
     timeZone = args?['timeZone'] ?? 'Asia/Kolkata'; // Default timezone if null
     print('new timeZone = $timeZone');
     setState(() {}); // Trigger a rebuild after setting the timeZone
