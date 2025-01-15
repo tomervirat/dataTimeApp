@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-class AvailableTimeZones {
-  List<String> timezones = [];
+List<String> timezones = [];
+bool isFetched = false;
 
-  bool isFetched = false;
+class AvailableTimeZones {
 
   Future<List<String>> getAllAvailableTimeZones() async {
     if (!isFetched) {

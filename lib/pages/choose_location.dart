@@ -55,7 +55,7 @@ class _ChooseLocationState extends State<ChooseLocation> {
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         backgroundColor: Colors.amberAccent,
-        title: Text(
+        title: const Text(
           'Choose location',
           style: TextStyle(
             color: Colors.white,
@@ -65,7 +65,7 @@ class _ChooseLocationState extends State<ChooseLocation> {
         elevation: 2,
       ),
       body: isLoading
-          ? SpinKitRotatingCircle(
+          ? const SpinKitRotatingCircle(
               color: Colors.orangeAccent,
               size: 80.0,
             )
@@ -78,7 +78,7 @@ class _ChooseLocationState extends State<ChooseLocation> {
                     child: TextField(
                       controller: _searchController,
                       onChanged: (value) {},
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Search for a timezone',
                         border: OutlineInputBorder(),
                         prefixIcon: Icon(Icons.search),
@@ -95,8 +95,17 @@ class _ChooseLocationState extends State<ChooseLocation> {
                           onTap: () {
                             String selectedTimeZone = filteredTimeZones[index];
                             Navigator.pop(context);
-                            Navigator.pushReplacementNamed(context, '/',
-                                arguments: {'timeZone': selectedTimeZone});
+                            if (ModalRoute.of(context)?.settings.name == '/home') {
+                              Navigator.pushReplacementNamed(context, '/',
+                                  arguments: {'timeZone': selectedTimeZone});
+                              print('from home');
+                            }
+                            else if (ModalRoute.of(context)?.settings.name == '/conversion') {
+                              // If the previous screen is '/conversion', navigate to a different screen
+                              print('from conversion');
+                              Navigator.pop(context); // Pop the current screen
+                              Navigator.pushNamed(context, '/conversion', arguments: {'timeZone': selectedTimeZone});
+                            }
                           },
                           title: Text(filteredTimeZones[index]),
                         ),

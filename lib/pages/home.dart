@@ -1,5 +1,7 @@
+import 'package:date_time/pages/error.dart';
 import 'package:flutter/material.dart';
 import 'package:date_time/pages/location_display.dart';
+import 'bottom_navigation.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -20,30 +22,41 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     data =
-        ModalRoute.of(context)?.settings.arguments as Map<dynamic, dynamic> ??
+        ModalRoute
+            .of(context)
+            ?.settings
+            .arguments as Map<dynamic, dynamic> ??
             {};
-    String bgImage = data['phase'] + '.png';
-    List<String> location =  data['location'];
 
-    print(data);
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'World Time',
-            style: TextStyle(
-              letterSpacing: 3.0,
-              fontSize: 30.0,
-              fontWeight: FontWeight.w900,
-            ),
+    String bgImage = '';
+    try {
+      bgImage = data['phase'] + '.png';
+    } catch (e) {
+      bgImage = '';
+    }
+    List<String> location = data['location'];
+
+    return bgImage.isNotEmpty
+        ? Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'World Time',
+          style: TextStyle(
+            letterSpacing: 3.0,
+            fontSize: 30.0,
+            fontWeight: FontWeight.w900,
           ),
-          centerTitle: true,
-          backgroundColor: Colors.amberAccent,
         ),
-        body: SafeArea(
-            child: Container(
+        centerTitle: true,
+        backgroundColor: Colors.amberAccent,
+      ),
+      body: SafeArea(
+        child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage('assets/images/$bgImage'), fit: BoxFit.cover),
+              image: AssetImage('assets/images/$bgImage'),
+              fit: BoxFit.cover,
+            ),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -57,7 +70,7 @@ class _HomeState extends State<Home> {
                       letterSpacing: 2.0,
                       fontSize: 50.0,
                       fontWeight: FontWeight.w700,
-                      color: Colors.white
+                      color: Colors.white,
                     ),
                   ),
                 ],
@@ -85,6 +98,10 @@ class _HomeState extends State<Home> {
               ),
             ],
           ),
-        )));
+        ),
+      ),
+      bottomNavigationBar: BottomNavigation(),
+    )
+        : Scaffold(body: ErrorNotFound()); // Simply use your Error widget here
   }
-}
+  }
