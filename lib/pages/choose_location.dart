@@ -1,6 +1,8 @@
+import 'package:date_time/pages/state_manage.dart';
 import 'package:date_time/services/available_time_zones.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
 
 class ChooseLocation extends StatefulWidget {
   const ChooseLocation({super.key});
@@ -13,7 +15,6 @@ class _ChooseLocationState extends State<ChooseLocation> {
   List<String> filteredTimeZones = [];
   TextEditingController _searchController = TextEditingController();
   bool isLoading = true;
-
 
   @override
   void initState() {
@@ -48,6 +49,8 @@ class _ChooseLocationState extends State<ChooseLocation> {
 
   @override
   Widget build(BuildContext context) {
+    final timeZoneState = Provider.of<TimeZoneState>(context);
+
     final args = ModalRoute.of(context)?.settings.arguments as Map?;
     return Scaffold(
       backgroundColor: Colors.grey[200],
@@ -93,13 +96,22 @@ class _ChooseLocationState extends State<ChooseLocation> {
                           onTap: () {
                             String selectedTimeZone = filteredTimeZones[index];
                             Navigator.pop(context);
-                            String fromButton  = args?['fromButton'];
+                            String fromButton = args?['fromButton'];
                             if (args?['previousRoute'] == '/home') {
                               Navigator.pushReplacementNamed(context, '/',
                                   arguments: {'timeZone': selectedTimeZone});
-                            }
-                            else if (args?['previousRoute'] == '/conversion'){
-                              Navigator.popAndPushNamed(context, '/conversion', arguments: {'timeZone': selectedTimeZone, 'fromButton' : fromButton});
+                            } else if (args?['previousRoute'] ==
+                                '/conversion') {
+                              if (fromButton == "button1") {
+                                timeZoneState.setTimeZone1(selectedTimeZone);
+                              } else {
+                                timeZoneState.setTimeZone2(selectedTimeZone);
+                              }
+                              Navigator.popAndPushNamed(context, '/conversion',
+                                  arguments: {
+                                    'timeZone': selectedTimeZone,
+                                    'fromButton': fromButton
+                                  });
                             }
                           },
                           title: Text(filteredTimeZones[index]),
