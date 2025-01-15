@@ -4,7 +4,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ChooseLocation extends StatefulWidget {
   const ChooseLocation({super.key});
-
   @override
   State<ChooseLocation> createState() => _ChooseLocationState();
 }
@@ -14,6 +13,7 @@ class _ChooseLocationState extends State<ChooseLocation> {
   List<String> filteredTimeZones = [];
   TextEditingController _searchController = TextEditingController();
   bool isLoading = true;
+
 
   @override
   void initState() {
@@ -27,7 +27,6 @@ class _ChooseLocationState extends State<ChooseLocation> {
     List<String> fetchedTimeZones =
         await allTimeZones.getAllAvailableTimeZones();
 
-    print('isLoading : $isLoading');
     if (isLoading) {
       setState(() {
         timeZones = fetchedTimeZones;
@@ -35,7 +34,6 @@ class _ChooseLocationState extends State<ChooseLocation> {
       });
     }
     filteredTimeZones = timeZones;
-    print('size ------ ${timeZones.length}');
   }
 
   void filterTimezone() {
@@ -50,7 +48,7 @@ class _ChooseLocationState extends State<ChooseLocation> {
 
   @override
   Widget build(BuildContext context) {
-    print('build state function ran inside widget');
+    final args = ModalRoute.of(context)?.settings.arguments as Map?;
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
@@ -95,16 +93,13 @@ class _ChooseLocationState extends State<ChooseLocation> {
                           onTap: () {
                             String selectedTimeZone = filteredTimeZones[index];
                             Navigator.pop(context);
-                            if (ModalRoute.of(context)?.settings.name == '/home') {
+                            String fromButton  = args?['fromButton'];
+                            if (args?['previousRoute'] == '/home') {
                               Navigator.pushReplacementNamed(context, '/',
                                   arguments: {'timeZone': selectedTimeZone});
-                              print('from home');
                             }
-                            else if (ModalRoute.of(context)?.settings.name == '/conversion') {
-                              // If the previous screen is '/conversion', navigate to a different screen
-                              print('from conversion');
-                              Navigator.pop(context); // Pop the current screen
-                              Navigator.pushNamed(context, '/conversion', arguments: {'timeZone': selectedTimeZone});
+                            else if (args?['previousRoute'] == '/conversion'){
+                              Navigator.popAndPushNamed(context, '/conversion', arguments: {'timeZone': selectedTimeZone, 'fromButton' : fromButton});
                             }
                           },
                           title: Text(filteredTimeZones[index]),

@@ -86,7 +86,7 @@ class _HomeState extends State<Home> {
               LocationDisplay(location: location),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/location');
+                  Navigator.pushNamed(context, '/location', arguments: {'previousRoute': '/home'});
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.amber,
